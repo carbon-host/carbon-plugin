@@ -13,7 +13,7 @@ class KtorManager {
             Netty,
             port = 8080,
             module = if (proxy) Application::proxyModule else Application::nonProxyModule
-        ).start(wait = true)
+        ).start(wait = false)
     }
 
 }
