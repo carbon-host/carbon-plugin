@@ -1,0 +1,3 @@
+name: CarbonPlugin
+version: '${version}'
+main: carbon.host.plugin.bungee.CarbonBungeePlugin

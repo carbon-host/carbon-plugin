@@ -1,15 +1,18 @@
 plugins {
-    id("com.github.mlgpenguin.kotlin")
+    id("host.carbon.gradle.kotlin")
     id("com.github.johnrengelman.shadow")
 }
 
-group = "com.github.mlgpenguin.multiplatformtemplate"
-version = "1.0.0"
+allprojects {
+    group = "host.carbon"
+    version = property("projectVersion") as String
+    description = "The Plugin providing information to Carbon.host"
+}
 
 dependencies {
-    implementation(project(":Backend"))
-    implementation(project(":Velocity"))
-    implementation(project(":Bungee"))
+    implementation(project(":spigot"))
+    implementation(project(":velocity"))
+    implementation(project(":bungee"))
 }
 
 tasks {
@@ -27,10 +30,10 @@ tasks {
 
     clean {
         dependsOn(
-            project(":Velocity").tasks.clean,
-            project(":Bungee").tasks.clean,
-            project(":Backend").tasks.clean,
-            project(":SharedLogic").tasks.clean,
+            project(":velocity").tasks.clean,
+            project(":bungee").tasks.clean,
+            project(":spigot").tasks.clean,
+            project(":common").tasks.clean,
         )
     }
 }

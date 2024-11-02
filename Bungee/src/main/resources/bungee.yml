@@ -1,3 +1,0 @@
-name: MultiPlatformTemplate
-version: '${version}'
-main: com.github.mlgpenguin.multiplatformtemplate.bungee.MultiPlatformTemplate
