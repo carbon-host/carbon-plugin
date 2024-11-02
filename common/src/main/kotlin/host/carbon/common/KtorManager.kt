@@ -10,12 +10,12 @@ import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-class KtorManager(val carbonAPI: CarbonAPI) {
+class KtorManager(private val carbonAPI: CarbonAPI) {
 
     fun startServer() {
         embeddedServer(
             Netty,
-            port = 8080,
+            port = 6,
         ) {
             install(CORS)
             install(ContentNegotiation) {
