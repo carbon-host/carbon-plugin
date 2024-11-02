@@ -1,4 +1,4 @@
-package carbon.host.plugin.velocity
+package host.carbon.plugin.velocity
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent

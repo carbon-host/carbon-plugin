@@ -1,4 +1,4 @@
-package carbon.host.plugin.bungee
+package host.carbon.plugin.bungee
 
 import net.md_5.bungee.api.plugin.Plugin
 

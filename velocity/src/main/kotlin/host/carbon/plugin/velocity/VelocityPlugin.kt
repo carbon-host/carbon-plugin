@@ -1,4 +1,4 @@
-package carbon.host.plugin.velocity
+package host.carbon.plugin.velocity
 
 import com.google.inject.Inject
 import com.velocitypowered.api.event.Subscribe

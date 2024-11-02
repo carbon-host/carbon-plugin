@@ -10,6 +10,8 @@ tasks {
     // Variable replacements
     processResources {
         filesMatching(listOf("plugin.yml", "bungee.yml")) {
+            println(project.version)
+            println("VERSION: ${project.version}")
             expand(
                 "version" to project.version,
                 "description" to project.description,
