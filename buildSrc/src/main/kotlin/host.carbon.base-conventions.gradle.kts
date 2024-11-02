@@ -4,7 +4,6 @@ plugins {
 }
 
 val targetJavaVersionNumber = 21
-val targetJavaVersion = JavaVersion.toVersion(targetJavaVersionNumber)
 
 tasks {
     // Variable replacements
@@ -39,21 +38,3 @@ java {
     javaTarget(21)
     withSourcesJar()
 }
-
-//java {
-//    sourceCompatibility = targetJavaVersion
-//    targetCompatibility = targetJavaVersion
-//
-//    if (JavaVersion.current() < targetJavaVersion) {
-//        toolchain.languageVersion.set(JavaLanguageVersion.of(targetJavaVersionNumber))
-//    }
-//}
-
-//tasks.withType<JavaCompile>().configureEach {
-//    options.encoding = "UTF-8"
-//
-//    if (targetJavaVersionNumber >= 10 || JavaVersion.current().isJava10Compatible) {
-//        options.release.set(targetJavaVersionNumber)
-//    }
-//}
-//
