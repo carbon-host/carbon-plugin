@@ -22,6 +22,26 @@ tasks {
     }
 }
 
+publishing {
+    publications.create<MavenPublication>("mavenJava") {
+        groupId = rootProject.group as String
+        artifactId = project.name
+        version = rootProject.version as String
+
+        artifact(tasks["shadowJar"])
+        artifact(tasks["sourcesJar"])
+    }
+    repositories.maven {
+        name = "Via"
+        url = uri("https://repo.carbon.host/")
+        credentials(PasswordCredentials::class)
+        authentication {
+            create<BasicAuthentication>("basic")
+        }
+    }
+}
+
+
 fun ShadowJar.configureRelocations() {
     relocate("com.google.gson", "host.carbon.plugin.libs.gson")
     relocate("org.yaml.snakeyaml", "host.carbon.plugin.libs.snakeyaml")

@@ -1,4 +1,5 @@
 plugins {
+    `java-library`
     kotlin("jvm")
 }
 
@@ -16,6 +17,16 @@ tasks {
             )
         }
     }
+
+    javadoc {
+        options.encoding = Charsets.UTF_8.name()
+        (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "-quiet")
+    }
+
+    compileJava {
+        options.encoding = Charsets.UTF_8.name()
+        options.compilerArgs.addAll(listOf("-nowarn", "-Xlint:-unchecked", "-Xlint:-deprecation"))
+    }
 }
 
 kotlin {
@@ -23,18 +34,24 @@ kotlin {
 }
 
 java {
-    sourceCompatibility = targetJavaVersion
-    targetCompatibility = targetJavaVersion
-
-    if (JavaVersion.current() < targetJavaVersion) {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(targetJavaVersionNumber))
-    }
+    javaTarget(21)
+    withSourcesJar()
 }
 
-tasks.withType<JavaCompile>().configureEach {
-    options.encoding = "UTF-8"
+//java {
+//    sourceCompatibility = targetJavaVersion
+//    targetCompatibility = targetJavaVersion
+//
+//    if (JavaVersion.current() < targetJavaVersion) {
+//        toolchain.languageVersion.set(JavaLanguageVersion.of(targetJavaVersionNumber))
+//    }
+//}
 
-    if (targetJavaVersionNumber >= 10 || JavaVersion.current().isJava10Compatible) {
-        options.release.set(targetJavaVersionNumber)
-    }
-}
+//tasks.withType<JavaCompile>().configureEach {
+//    options.encoding = "UTF-8"
+//
+//    if (targetJavaVersionNumber >= 10 || JavaVersion.current().isJava10Compatible) {
+//        options.release.set(targetJavaVersionNumber)
+//    }
+//}
+//

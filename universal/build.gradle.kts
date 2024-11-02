@@ -11,7 +11,7 @@ tasks {
             attributes["paperweight-mappings-namespace"] = "mojang"
         }
         archiveClassifier.set("")
-        archiveFileName.set("ViaVersion-${project.version}.jar")
+        archiveFileName.set("CarbonPlugin-${project.version}.jar")
         destinationDirectory.set(rootProject.projectDir.resolve("build/libs"))
     }
     sourcesJar {
