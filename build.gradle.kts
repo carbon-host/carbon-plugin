@@ -1,6 +1,6 @@
 plugins {
-    id("host.carbon.gradle.kotlin")
-    id("com.github.johnrengelman.shadow")
+    base
+    id("host.carbon.build-logic")
 }
 
 allprojects {
@@ -9,32 +9,18 @@ allprojects {
     description = "The Plugin providing information to Carbon.host"
 }
 
-dependencies {
-    implementation(project(":spigot"))
-    implementation(project(":velocity"))
-    implementation(project(":bungee"))
-}
 
-tasks {
-     jar {
-        enabled = false
-     }
+val main = setOf(
+    projects.carbon,
+    projects.carbonCommon,
+    projects.carbonSpigot,
+    projects.carbonBungee,
+    projects.carbonVelocity,
+).map { it.dependencyProject }
 
-    build {
-        dependsOn(shadowJar)
-    }
-
-    shadowJar {
-        destinationDirectory.set(file("$rootDir/build"))
-    }
-
-    clean {
-        dependsOn(
-            project(":velocity").tasks.clean,
-            project(":bungee").tasks.clean,
-            project(":spigot").tasks.clean,
-            project(":common").tasks.clean,
-        )
+subprojects {
+    when (this) {
+        in main -> plugins.apply("host.carbon.shadow-conventions")
+        else -> plugins.apply("host.carbon.base-conventions")
     }
 }
-

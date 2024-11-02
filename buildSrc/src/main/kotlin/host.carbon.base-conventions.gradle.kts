@@ -2,12 +2,21 @@ plugins {
     kotlin("jvm")
 }
 
-repositories {
-    mavenCentral()
-}
-
 val targetJavaVersionNumber = 21
 val targetJavaVersion = JavaVersion.toVersion(targetJavaVersionNumber)
+
+tasks {
+    // Variable replacements
+    processResources {
+        filesMatching(listOf("plugin.yml", "bungee.yml")) {
+            expand(
+                "version" to project.version,
+                "description" to project.description,
+                "website" to "https://carbon.host",
+            )
+        }
+    }
+}
 
 kotlin {
     jvmToolchain(targetJavaVersionNumber)

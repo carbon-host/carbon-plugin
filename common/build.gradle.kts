@@ -1,10 +1,5 @@
 plugins {
-    id("host.carbon.gradle.kotlin")
     id("io.ktor.plugin") version "3.0.0"
-}
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {
