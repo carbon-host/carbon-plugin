@@ -27,6 +27,10 @@ class KtorManager(private val carbonAPI: CarbonAPI) {
             }
 
             routing {
+                get("/") {
+                    call.respondText("Hello World!")
+                }
+
                 route("/v0") {
                     get {
                         val info = ServerInfo(
