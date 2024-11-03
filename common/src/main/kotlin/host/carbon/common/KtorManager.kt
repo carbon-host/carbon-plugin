@@ -1,6 +1,6 @@
 package host.carbon.common
 
-import host.carbon.common.types.ServerInfo
+import host.carbon.common.types.*
 import io.ktor.serialization.gson.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -27,13 +27,32 @@ class KtorManager(private val carbonAPI: CarbonAPI) {
             routing {
                 get("/") {
                     val info = ServerInfo(
-                        isProxy = carbonAPI.getIsProxy(),
-                        maxPlayers = carbonAPI.getMaxPlayers(),
-                        onlinePlayers = carbonAPI.getOnlinePlayerCount(),
-                        tps = carbonAPI.getTPS()
+                        carbonAPI.getMaxPlayers(),
+                        carbonAPI.getOnlinePlayerCount(),
+                        carbonAPI.getTPS()
                     )
 
                     call.respond(info)
+                }
+
+                get("/players") {
+                    val limit = call.request.queryParameters["limit"]?.toInt() ?: 25
+                    val offset = call.request.queryParameters["offset"]?.toInt() ?: 0
+
+                    val players = carbonAPI.getOnlinePlayers(limit.coerceAtMost(100), offset)
+
+                    call.respond(
+                        PaginatedResponse(
+                            Pagination(limit, offset),
+                            PlayersInfo(
+                                players,
+                                PlayerCountInfo(
+                                    carbonAPI.getOnlinePlayerCount(),
+                                    carbonAPI.getMaxPlayers(),
+                                )
+                            )
+                        )
+                    )
                 }
             }
         }.start(wait = false)
