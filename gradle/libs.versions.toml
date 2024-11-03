@@ -5,15 +5,20 @@ gson = "2.11.0"
 guava = "17.0"
 snakeYaml = "2.2"
 
+spark = "0.1-SNAPSHOT"
+
 # Platforms
 bungee = "1.21-R0.1-SNAPSHOT"
 paper = "1.21.3-R0.1-SNAPSHOT"
 velocity = "3.4.0-SNAPSHOT"
 
+
 [libraries]
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 snakeYaml = { group = "org.yaml", name = "snakeyaml", version.ref = "snakeYaml" }
+
+spark = { group = "me.lucko", name = "spark-api", version.ref = "spark" }
 
 bungee = { group = "net.md-5", name = "bungeecord-api", version.ref = "bungee" }
 paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }

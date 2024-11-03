@@ -3,8 +3,8 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 dependencyResolutionManagement {
     // configures repositories for all projects
     repositories {
-        maven("https://repo.papermc.io/repository/maven-public/")
         maven("https://oss.sonatype.org/content/repositories/snapshots")
+        maven("https://repo.papermc.io/repository/maven-public/")
         mavenCentral()
     }
     // only use these repos
