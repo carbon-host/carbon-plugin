@@ -1,8 +1,0 @@
-name: CarbonPlugin
-main: host.carbon.plugin.spigot.CarbonPlugin
-authors: [Carbon Host]
-version: ${version}
-description: ${description}
-website: ${website}
-api-version: '1.13'
-folia-supported: true

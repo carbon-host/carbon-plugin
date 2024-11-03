@@ -1,3 +1,0 @@
-name: CarbonPlugin
-version: '${version}'
-main: host.carbon.plugin.bungee.CarbonBungeePlugin
