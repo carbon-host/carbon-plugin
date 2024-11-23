@@ -64,6 +64,22 @@ class KtorManager(private val carbonAPI: CarbonAPI) {
                             )
                         )
                     }
+
+                    // TODO: Implement pagination
+                    get("/commands") {
+                        val limit = call.request.queryParameters["limit"]?.toInt() ?: 250
+                        val offset = call.request.queryParameters["offset"]?.toInt() ?: 0
+                        val query = call.request.queryParameters["query"]
+
+                        val commands = carbonAPI.getCommands(query)
+
+                        call.respond(
+                            PaginatedResponse(
+                                Pagination(limit, offset),
+                                commands
+                            )
+                        )
+                    }
                 }
             }
         }.start(wait = false)

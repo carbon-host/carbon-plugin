@@ -1,6 +1,7 @@
 package host.carbon.plugin.spigot
 
 import host.carbon.common.CarbonAPI
+import host.carbon.common.types.players.PlayerInfo
 import me.lucko.spark.api.SparkProvider
 import me.lucko.spark.api.statistic.StatisticWindow
 import org.bukkit.Bukkit
@@ -17,8 +18,12 @@ class CarbonPluginAPI : CarbonAPI() {
         return Bukkit.getOnlinePlayers().size
     }
 
-    override fun getOnlinePlayers(): List<String> {
-        return Bukkit.getOnlinePlayers().map { it.name }
+    override fun getOnlinePlayers(): List<PlayerInfo> {
+        return Bukkit.getOnlinePlayers().map { player -> PlayerInfo(player.name, player.uniqueId.toString()) }
+    }
+
+    override fun getCommands(query: String?): List<String> {
+        return Bukkit.getServer().commandMap.knownCommands.map { it.key }.filter { it.startsWith(query ?: "") }
     }
 
     override fun getTPS(): Double? {
@@ -30,7 +35,7 @@ class CarbonPluginAPI : CarbonAPI() {
     }
 
     override fun getMemoryUsage(): Long {
-       return  ManagementFactory.getMemoryMXBean().heapMemoryUsage.used
+        return ManagementFactory.getMemoryMXBean().heapMemoryUsage.used
     }
 
     override fun getTotalMemory(): Long {
