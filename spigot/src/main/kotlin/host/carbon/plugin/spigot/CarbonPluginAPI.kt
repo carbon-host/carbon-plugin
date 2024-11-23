@@ -23,7 +23,7 @@ class CarbonPluginAPI : CarbonAPI() {
     }
 
     override fun getCommands(query: String?): List<String> {
-        return Bukkit.getServer().commandMap.knownCommands.map { it.key }.filter { it.startsWith(query ?: "") }
+        return Bukkit.getServer().commandMap.knownCommands.map { it.key }.filter { it.startsWith(query ?: "", true) }
     }
 
     override fun getTPS(): Double? {
