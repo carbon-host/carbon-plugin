@@ -2,6 +2,7 @@ package host.carbon.plugin.spigot
 
 import host.carbon.common.CarbonAPI
 import host.carbon.common.types.players.PlayerInfo
+import host.carbon.common.types.players.PlayerLocation
 import me.lucko.spark.api.SparkProvider
 import me.lucko.spark.api.statistic.StatisticWindow
 import org.bukkit.Bukkit
@@ -19,7 +20,25 @@ class CarbonPluginAPI : CarbonAPI() {
     }
 
     override fun getOnlinePlayers(): List<PlayerInfo> {
-        return Bukkit.getOnlinePlayers().map { player -> PlayerInfo(player.name, player.uniqueId.toString()) }
+        return Bukkit.getOnlinePlayers()
+            .map { player ->
+                PlayerInfo(
+                    player.name,
+                    player.uniqueId.toString(),
+                    player.firstPlayed,
+                    player.lastSeen,
+                    player.lastLogin,
+                    player.isOp,
+                    player.idleDuration.toMillis(),
+                    player.ping,
+                    PlayerLocation(
+                        player.location.x,
+                        player.location.y,
+                        player.location.z,
+                        player.location.world.name
+                    )
+                )
+            }
     }
 
     override fun getCommands(query: String?): List<String> {
