@@ -2,8 +2,8 @@ name: Build and Release JAR
 
 on:
   push:
-    tags:
-      - 'v*' # Triggers on version tags v1.0.0, v2.1.0, etc.
+    branches:
+      - master
 env:
   build-number: ${GITHUB_RUN_NUMBER}
 
