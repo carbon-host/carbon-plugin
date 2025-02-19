@@ -10,8 +10,10 @@ import com.velocitypowered.api.proxy.ProxyServer
 import host.carbon.common.KtorManager
 import org.slf4j.Logger
 import org.yaml.snakeyaml.Yaml
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
+import java.util.*
 
 @Plugin(
     id = "carbon-plugin",
@@ -30,19 +32,26 @@ class VelocityPlugin @Inject constructor(
     fun onProxyInitialization(event: ProxyInitializeEvent?) {
         Files.createDirectories(dataDirectory)
 
-        val configFile = dataDirectory.resolve("config.yml")
-        if (Files.notExists(configFile)) {
-            javaClass.classLoader.getResourceAsStream("config.yml")?.use {
-                Files.copy(it, configFile)
+        var port = 25505
+        var carbonKey = UUID.randomUUID()
+
+        val configFile = dataDirectory.resolve("config.yml").toFile()
+        if (configFile.exists()) {
+            Files.newInputStream(configFile.toPath()).use { inputStream ->
+                val config: Map<String, Any> = Yaml().load(inputStream)
+                port = config["port"] as Int
+                carbonKey = UUID.fromString(config["carbon-key"] as String)
+            }
+        } else {
+            Files.newOutputStream(configFile.toPath()).use { outputStream ->
+                Yaml().dump(
+                    mapOf(
+                        "port" to port,
+                        "carbon-key" to carbonKey.toString()
+                    ), outputStream.writer()
+                )
             }
         }
-
-        val yaml = Yaml()
-        val config: Map<String, Any> = Files.newInputStream(configFile).use { inputStream ->
-            yaml.load(inputStream)
-        }
-
-        val port = config["port"] as Int
 
         ktorManager = KtorManager(CarbonPluginAPI(server), port)
         ktorManager.startServer()
