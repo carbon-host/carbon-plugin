@@ -68,5 +68,4 @@ class CarbonPluginAPI : CarbonAPI() {
     override fun getCPUCores(): Double {
         return Runtime.getRuntime().availableProcessors().toDouble()
     }
-
 }
