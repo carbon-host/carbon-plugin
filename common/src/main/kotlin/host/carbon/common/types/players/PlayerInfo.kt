@@ -4,16 +4,15 @@ data class PlayerInfo(
     val name: String,
     val uuid: String,
 
-    val firstPlayed: Long,
-    val lastSeen: Long,
-    val lastLogin: Long,
+    val firstPlayed: Long?,
+    val lastSeen: Long?,
+    val lastLogin: Long?,
 
-    val isOp: Boolean,
-    val idleDuration: Long,
+    val isOp: Boolean?,
+    val idleDuration: Long?,
     val ping: Int,
 
-    val location: PlayerLocation,
-
+    val location: PlayerLocation?
 )
 
 data class PlayerLocation(
