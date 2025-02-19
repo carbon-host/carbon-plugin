@@ -8,6 +8,8 @@ dependencies {
         exclude("com.velocitypowered", "velocity-brigadier")
     }
     annotationProcessor(libs.velocity)
+    compileOnly(projects.carbonCommon)
+    compileOnly(libs.snakeYaml)
 }
 
 //sourceSets {

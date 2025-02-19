@@ -1,38 +1,38 @@
-package host.carbon.plugin.bungee
+package host.carbon.plugin.velocity
 
+import com.velocitypowered.api.proxy.ProxyServer
 import host.carbon.common.CarbonAPI
 import host.carbon.common.types.players.PlayerInfo
-import net.md_5.bungee.api.ProxyServer
 import java.lang.management.ManagementFactory
 
-class CarbonPluginAPI : CarbonAPI() {
+class CarbonPluginAPI(private val server: ProxyServer) : CarbonAPI() {
     override fun getMaxPlayers(): Int {
-        return ProxyServer.getInstance().config.playerLimit
+        return server.configuration.showMaxPlayers
     }
 
     override fun getOnlinePlayerCount(): Int {
-        return ProxyServer.getInstance().onlineCount
+        return server.playerCount
     }
 
     override fun getOnlinePlayers(): List<PlayerInfo> {
-        return ProxyServer.getInstance().players
+        return server.allPlayers
             .map { player ->
                 PlayerInfo(
-                    player.name,
+                    player.username,
                     player.uniqueId.toString(),
                     null,
                     null,
                     null,
                     null,
                     null,
-                    player.ping,
+                    player.ping.toInt(),
                     null
                 )
             }
     }
 
     override fun getCommands(query: String?): List<String> {
-        return ProxyServer.getInstance().pluginManager.commands.map { it.key }.filter { query == null || it.startsWith(query, true) }
+        return server.commandManager.aliases.filter { query == null || it.startsWith(query, true) }
     }
 
     override fun getTPS(): Double? {
