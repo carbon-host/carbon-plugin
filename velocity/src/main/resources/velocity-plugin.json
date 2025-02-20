@@ -1,0 +1,6 @@
+{
+  "id": "carbonplugin",
+  "name": "CarbonPlugin",
+  "version": "$version",
+  "main": "host.carbon.plugin.velocity.VelocityPlugin"
+}
