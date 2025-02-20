@@ -13,7 +13,7 @@ class CarbonBungeePlugin : Plugin() {
     private lateinit var ktorManager: KtorManager
 
     override fun onEnable() {
-        if (dataFolder.exists()) {
+        if (!dataFolder.exists()) {
             dataFolder.mkdir()
         }
 
