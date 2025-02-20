@@ -9,6 +9,7 @@ import com.velocitypowered.api.plugin.annotation.DataDirectory
 import com.velocitypowered.api.proxy.ProxyServer
 import host.carbon.common.KtorManager
 import org.slf4j.Logger
+import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
 import java.io.File
 import java.nio.file.Files
@@ -44,7 +45,11 @@ class VelocityPlugin @Inject constructor(
             }
         } else {
             Files.newOutputStream(configFile.toPath()).use { outputStream ->
-                Yaml().dump(
+                val options = DumperOptions().apply {
+                    defaultFlowStyle = DumperOptions.FlowStyle.BLOCK
+                    isPrettyFlow = true
+                }
+                Yaml(options).dump(
                     mapOf(
                         "port" to port,
                         "carbon-key" to carbonKey
