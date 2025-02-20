@@ -33,27 +33,27 @@ class VelocityPlugin @Inject constructor(
         Files.createDirectories(dataDirectory)
 
         var port = 25505
-        var carbonKey = UUID.randomUUID()
+        var carbonKey = UUID.randomUUID().toString()
 
         val configFile = dataDirectory.resolve("config.yml").toFile()
         if (configFile.exists()) {
             Files.newInputStream(configFile.toPath()).use { inputStream ->
                 val config: Map<String, Any> = Yaml().load(inputStream)
                 port = config["port"] as Int
-                carbonKey = UUID.fromString(config["carbon-key"] as String)
+                carbonKey = config["carbon-key"] as String
             }
         } else {
             Files.newOutputStream(configFile.toPath()).use { outputStream ->
                 Yaml().dump(
                     mapOf(
                         "port" to port,
-                        "carbon-key" to carbonKey.toString()
+                        "carbon-key" to carbonKey
                     ), outputStream.writer()
                 )
             }
         }
 
-        ktorManager = KtorManager(CarbonPluginAPI(server), port)
+        ktorManager = KtorManager(CarbonPluginAPI(server), port, carbonKey)
         ktorManager.startServer()
 
         logger.info("Carbon API started on port $port")

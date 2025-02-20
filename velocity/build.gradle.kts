@@ -9,7 +9,7 @@ dependencies {
     }
     annotationProcessor(libs.velocity)
     compileOnly(projects.carbonCommon)
-    compileOnly(libs.snakeYaml)
+    implementation(libs.snakeYaml)
 }
 
 //sourceSets {

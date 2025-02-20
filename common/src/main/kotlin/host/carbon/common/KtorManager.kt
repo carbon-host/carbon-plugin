@@ -13,9 +13,21 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.http.*
 
+class KtorManager(private val carbonAPI: CarbonAPI, port: Int, private val carbonKey: String) {
 
-class KtorManager(private val carbonAPI: CarbonAPI, private val port: Int) {
+    private val keyAuth = createRouteScopedPlugin("keyAuth") {
+        onCall { call ->
+            val authHeader = call.request.headers["Authorization"]
+            val key = authHeader?.removePrefix("Bearer ")?.trim()
+
+            if (key != carbonKey) {
+                call.respond(HttpStatusCode.Unauthorized, "Invalid or missing API key")
+                return@onCall
+            }
+        }
+    }
 
     private val server = embeddedServer(
         Netty,
@@ -34,6 +46,8 @@ class KtorManager(private val carbonAPI: CarbonAPI, private val port: Int) {
             }
 
             route("/v1") {
+                install(keyAuth)
+
                 get {
                     val info = ServerInfo(
                         carbonAPI.getTPS(),
@@ -67,7 +81,6 @@ class KtorManager(private val carbonAPI: CarbonAPI, private val port: Int) {
                     )
                 }
 
-                // TODO: Implement pagination
                 get("/commands") {
                     val limit = call.request.queryParameters["limit"]?.toInt() ?: 250
                     val offset = call.request.queryParameters["offset"]?.toInt() ?: 0
@@ -93,5 +106,4 @@ class KtorManager(private val carbonAPI: CarbonAPI, private val port: Int) {
     fun stopServer() {
         server.stop()
     }
-
 }

@@ -14,12 +14,12 @@ class CarbonPlugin : JavaPlugin() {
         }
 
         var port = 25505
-        var carbonKey = UUID.randomUUID()
+        var carbonKey = UUID.randomUUID().toString()
 
         val configFile = File(dataFolder, "config.yml")
         if (configFile.exists()) {
             port = config.getInt("port")
-            carbonKey = UUID.fromString("carbon-key")
+            carbonKey = config.getString("carbon-key")!!
         } else {
             configFile.createNewFile()
 
@@ -28,7 +28,7 @@ class CarbonPlugin : JavaPlugin() {
             saveConfig()
         }
 
-        ktorManager = KtorManager(CarbonPluginAPI(), port)
+        ktorManager = KtorManager(CarbonPluginAPI(), port, carbonKey)
         ktorManager.startServer()
 
         logger.info("Carbon API started on port $port")
