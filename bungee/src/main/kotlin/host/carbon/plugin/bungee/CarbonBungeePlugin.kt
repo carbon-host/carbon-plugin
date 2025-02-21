@@ -1,6 +1,10 @@
 package host.carbon.plugin.bungee
 
+import host.carbon.common.CarbonAPI
 import host.carbon.common.KtorManager
+import host.carbon.common.types.AnalyticInfo
+import host.carbon.common.types.ServerInfo
+import host.carbon.common.types.ServerResourceInfo
 import net.md_5.bungee.api.plugin.Plugin
 import net.md_5.bungee.config.Configuration
 import net.md_5.bungee.config.ConfigurationProvider
@@ -8,9 +12,11 @@ import net.md_5.bungee.config.YamlConfiguration
 import org.yaml.snakeyaml.Yaml
 import java.io.File
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class CarbonBungeePlugin : Plugin() {
     private lateinit var ktorManager: KtorManager
+    lateinit var carbonAPI: CarbonAPI
 
     override fun onEnable() {
         if (!dataFolder.exists()) {
@@ -33,11 +39,33 @@ class CarbonBungeePlugin : Plugin() {
             ConfigurationProvider.getProvider(YamlConfiguration::class.java).save(config, configFile)
         }
 
-        ktorManager = KtorManager(CarbonPluginAPI(), port, carbonKey)
+        carbonAPI = CarbonPluginAPI()
+
+        ktorManager = KtorManager(carbonAPI, port, carbonKey)
         ktorManager.startServer()
 
         logger.info("Carbon API started on port $port")
 
+        proxy.scheduler.schedule(this, {
+            carbonAPI.analytics.add(
+                AnalyticInfo(
+                    ServerInfo(
+                        carbonAPI.getTPS(),
+                        carbonAPI.getMSPT(),
+                        ServerResourceInfo(
+                            carbonAPI.getMemoryUsage(),
+                            carbonAPI.getTotalMemory(),
+                            carbonAPI.getCPUUsage(),
+                            carbonAPI.getCPUCores()
+                        ),
+                        carbonAPI.getPlayerCountInfo(),
+                    ), Date()
+                )
+            )
+
+            val thirtySecondsAgo = Date(System.currentTimeMillis() - 30 * 1000)
+            carbonAPI.analytics.removeIf { it.createdAt.before(thirtySecondsAgo) }
+        }, 1, TimeUnit.SECONDS)
     }
 
     override fun onDisable() {
