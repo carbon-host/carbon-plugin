@@ -46,7 +46,7 @@ class KtorManager(private val carbonAPI: CarbonAPI, port: Int, private val carbo
             }
 
             route("/v1") {
-//                install(keyAuth)
+                install(keyAuth)
 
                 get {
                     val info = ServerInfo(
