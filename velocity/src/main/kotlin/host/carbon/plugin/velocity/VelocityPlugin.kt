@@ -80,12 +80,12 @@ class VelocityPlugin @Inject constructor(
                             carbonAPI.getCPUCores()
                         ),
                         carbonAPI.getPlayerCountInfo(),
-                    ), Date()
+                    ), Date().time
                 )
             )
 
-            val thirtySecondsAgo = Date(System.currentTimeMillis() - 30 * 1000)
-            carbonAPI.analytics.removeIf { it.createdAt.before(thirtySecondsAgo) }
+            val thirtySecondsAgo = System.currentTimeMillis() - 30 * 1000
+            carbonAPI.analytics.removeIf { it.createdAt < thirtySecondsAgo }
         }).repeat(1, TimeUnit.SECONDS).schedule()
     }
 

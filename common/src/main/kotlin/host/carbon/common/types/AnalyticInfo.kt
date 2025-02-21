@@ -4,5 +4,5 @@ import java.util.Date
 
 data class AnalyticInfo(
     val serverInfo: ServerInfo,
-    val createdAt: Date,
+    val createdAt: Long,
 )
