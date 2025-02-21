@@ -35,4 +35,8 @@ abstract class CarbonAPI {
             getMaxPlayers()
         )
     }
+
+    fun getCarbonVersion(): String {
+        return "1.0.1"
+    }
 }
