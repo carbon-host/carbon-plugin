@@ -16,6 +16,7 @@ tasks {
         archiveClassifier.set("")
         configureRelocations()
         configureExcludes()
+        minimize()
     }
     named("build") {
         dependsOn(shadowJar)

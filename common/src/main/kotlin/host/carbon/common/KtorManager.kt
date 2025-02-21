@@ -46,7 +46,7 @@ class KtorManager(private val carbonAPI: CarbonAPI, port: Int, private val carbo
             }
 
             route("/v1") {
-                install(keyAuth)
+//                install(keyAuth)
 
                 get {
                     val info = ServerInfo(
@@ -62,6 +62,11 @@ class KtorManager(private val carbonAPI: CarbonAPI, port: Int, private val carbo
                     )
 
                     call.respond(info)
+                }
+
+                // last 30 seconds by default
+                get("/analytics") {
+                    call.respond(carbonAPI.analytics)
                 }
 
                 get("/players") {

@@ -1,9 +1,13 @@
 package host.carbon.common
 
+import host.carbon.common.types.AnalyticInfo
+import host.carbon.common.types.ServerInfo
 import host.carbon.common.types.players.PlayerCountInfo
 import host.carbon.common.types.players.PlayerInfo
 
 abstract class CarbonAPI {
+    val analytics = mutableListOf<AnalyticInfo>()
+
     abstract fun getMaxPlayers(): Int
     abstract fun getOnlinePlayerCount(): Int
     abstract fun getOnlinePlayers(): List<PlayerInfo>
@@ -31,5 +35,4 @@ abstract class CarbonAPI {
             getMaxPlayers()
         )
     }
-
 }
